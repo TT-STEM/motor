@@ -1,5 +1,5 @@
 /**
- * Motor Control for TT-STEM Motor Users.
+ * Motor Control for TT Motor Users.
  */
 //% weight=100 color=#DF6721 icon="\uf14e" block="TT Motor"
 //% groups='["Motors", "Servos"]'
