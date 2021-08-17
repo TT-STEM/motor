@@ -2,7 +2,7 @@
  * Motor Control for TT Motor Users.
  */
 //% weight=100 color=#DF6721 icon="\uf085" block="TT Motor"
-//% groups='["Servos", "Motors"]'
+//% groups='["Motors", "Servos"]'
 namespace motor
 {	
     //Constants 
@@ -10,9 +10,10 @@ namespace motor
     let MODE_1_REG = 0x00  //The mode 1 register address
     
     // If you wanted to write some code that stepped through the servos then this is the Base and size to do that 	
-	let SERVO_1_REG_BASE = 0x08 
+    let SERVO_1_REG_BASE = 0x08 
     let SERVO_REG_DISTANCE = 4
-	//To get the PWM pulses to the correct size and zero offset these are the default numbers. 
+    
+    //To get the PWM pulses to the correct size and zero offset these are the default numbers. 
     let SERVO_MULTIPLIER = 226
     let SERVO_ZERO_OFFSET = 0x66
 
@@ -60,9 +61,9 @@ namespace motor
     // Board1 is the default value (set as the CHIP_ADDRESS)
 	export enum BoardAddresses{
 		Board1 = 0x6C,
-        Board2 = 0x6D,
-        Board3 = 0x6E,
-        Board4 = 0x6F
+        	Board2 = 0x6D,
+        	Board3 = 0x6E,
+        	Board4 = 0x6F
 	}
 
     // chipAddress can be changed in 'JavaScript' mode if the I2C address of the board has been altered:
@@ -110,49 +111,49 @@ namespace motor
 		This secret incantation sets up the PCA9865 I2C driver chip to be running at 50Hz pulse repetition, and then sets the 16 output registers to 1.5mS - centre travel.
 		It should not need to be called directly be a user - the first servo or motor write will call it automatically.
 	*/
-	function I2cInit(): void {
-            let buf = pins.createBuffer(2)
+    function I2cInit(): void {
+	let buf = pins.createBuffer(2)
 
-            //Should probably do a soft reset of the I2C chip here when I figure out how
+	//Should probably do a soft reset of the I2C chip here when I figure out how
 
-            // First set the prescaler to 50 hz
-            buf[0] = PRESCALE_REG
-            buf[1] = 0x85 //50Hz
-            pins.i2cWriteBuffer(chipAddress, buf, false)
-            //Block write via the all leds register to turn off all servo and motor outputs
-            buf[0] = 0xFA
-            buf[1] = 0x00
-            pins.i2cWriteBuffer(chipAddress, buf, false)
-            buf[0] = 0xFB
-            buf[1] = 0x00
-            pins.i2cWriteBuffer(chipAddress, buf, false)
-            buf[0] = 0xFC
-            buf[1] = 0x00
-            pins.i2cWriteBuffer(chipAddress, buf, false)
-            buf[0] = 0xFD
-            buf[1] = 0x00
-            pins.i2cWriteBuffer(chipAddress, buf, false)
-            //Set the mode 1 register to come out of sleep
-            buf[0] = MODE_1_REG
-            buf[1] = 0x01
-            pins.i2cWriteBuffer(chipAddress, buf, false)
-            //set the initalised flag so we dont come in here again automatically
-            initalised = true
+	// First set the prescaler to 50 hz
+	buf[0] = PRESCALE_REG
+	buf[1] = 0x85 //50Hz
+	pins.i2cWriteBuffer(chipAddress, buf, false)
+
+		    //Block write via the all leds register to turn off all servo and motor outputs
+	buf[0] = 0xFA
+	buf[1] = 0x00
+	pins.i2cWriteBuffer(chipAddress, buf, false)
+	buf[0] = 0xFB
+	buf[1] = 0x00
+	pins.i2cWriteBuffer(chipAddress, buf, false)
+	buf[0] = 0xFC
+	buf[1] = 0x00
+	pins.i2cWriteBuffer(chipAddress, buf, false)
+	buf[0] = 0xFD
+	buf[1] = 0x00
+	pins.i2cWriteBuffer(chipAddress, buf, false)
+
+	//Set the mode 1 register to come out of sleep
+	buf[0] = MODE_1_REG
+	buf[1] = 0x01
+	pins.i2cWriteBuffer(chipAddress, buf, false)
+
+	//set the initalised flag so we dont come in here again automatically
+	initalised = true
     	}
 	
     /**
      * Sets the requested servo to the reguested angle.
-	 * If the PCA has not yet been initialised calls the initialisation routine.
-     * @param servo Which servo to set
-	 * @param degrees the angle to set the servo to
+     * If the PCA has not yet been initialised calls the initialisation routine.     
      */
     //% group=Servos
-    //% subcategory=Servos
-    //% blockId=kitronik_I2Cservo_write
-    //% block="set%Servo|to%degrees|degrees"
+    //% blockId=motor_servo
+    //% block="Servo|%Servo|degree|%degrees|"
     //% weight=100 blockGap=8
-	//% degrees.min=0 degrees.max=180
-    export function servoWrite(servo: Servos, degrees: number): void {
+    //% degrees.min=0 degrees.max=180
+    export function servo(servo: Servos, degrees: number): void {
         if (initalised == false) {
             I2cInit()
         }
@@ -182,15 +183,11 @@ namespace motor
 
     /**
      * Sets the requested motor running in chosen direction at a set speed.
-     * if the PCA has not yet been initialised calls the initialisation routine.
-     * @param motor which motor to turn on
-     * @param dir   which direction to go
-     * @param speed how fast to spin the motor
+     * if the PCA has not yet been initialised calls the initialisation routine.     
      */
-    //% subcategory=Motors
     //% group=Motors
-    //% blockId=kitronik_motor_on
-    //% block="%motor|on direction %dir|speed %speed"
+    //% blockId=motor_motorOn
+    //% block="Motor|%motor|direction|%dir|speed|%speed|"
     //% weight=100 blockGap=8
     //% speed.min=0 speed.max=100
     export function motorOn(motor: Motors, dir: MotorDirection, speed: number): void {
@@ -259,15 +256,13 @@ namespace motor
     }   
 
     /**
-     * Turns off the specified motor.
-     * @param motor which motor to turn off
+     * Turns off specified motor.     
      */
-    //% subcategory=Motors
     //% group=Motors
-    //% blockId=kitronik_motor_off
+    //% blockId=motor_stopMotor
     //% weight=95 blockGap=8
-    //%block="turn off %motor"
-    export function motorOff(motor: Motors): void {
+    //%block="Motor Stop|%motor|"
+    export function stopMotor(motor: Motors): void {
 
     	let buf = pins.createBuffer(2)
 
@@ -286,21 +281,32 @@ namespace motor
     }
 
     /**
-     * Turns off all motors and servos.
+     * Turns off all motors.
      */
-    //% blockId=kitronik_robotics_all_off
+    //% group=Motors
+    //% blockId=motor_stopAllMotors
     //% weight=100 blockGap=8
-    //%block="turn off all outputs"
-    export function allOff(): void {
+    //%block="Motor Stop All"
+    export function stopAllMotors(): void {       
+        stopMotor(Motors.Motor1)
+        stopMotor(Motors.Motor2)
+        stopMotor(Motors.Motor3)
+        stopMotor(Motors.Motor4)
+        }
+    }
+	
+    /**
+     * Turns off all servos.
+     */
+    //% group=Servos
+    //% blockId=motor_stopAllServos
+    //% weight=100 blockGap=8
+    //%block="Servo Stop All"
+    export function stopAllServos(): void {
         let buf = pins.createBuffer(2)
         let servoOffCount = 0
         let servoStartReg = Servos.Servo1
         let servoRegCount = 0
-
-        motorOff(Motors.Motor1)
-        motorOff(Motors.Motor2)
-        motorOff(Motors.Motor3)
-        motorOff(Motors.Motor4)
 
         while (servoOffCount < 8) {
             buf[0] = servoStartReg + servoRegCount
