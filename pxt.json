@@ -1,13 +1,12 @@
 {
     "name": "motor",
-    "description": "",
+    "description": "This library is TT Motor. Please use this under Trumptech Trainer guidance.",
     "dependencies": {
         "core": "*",
         "radio": "*",
         "microphone": "*"
     },
     "files": [
-        "main.blocks",
         "main.ts",
         "README.md"
     ],
@@ -21,5 +20,5 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "blocksprj"
+    "preferredEditor": "tsprj"
 }
