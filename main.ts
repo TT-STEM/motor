@@ -1,9 +1,9 @@
 /**
- * Blocks for driving the Kitronik All-in-one Robotics Board
+ * Motor Control for TT Motor Users.
  */
-//% weight=100 color=#00A654 icon="\uf1b6" block="Robotics"
+//% weight=100 color=#DF6721 icon="\uf085" block="TT Motor"
 //% groups='["Servos", "Motors"]'
-namespace Kitronik_Robotics_Board
+namespace motor
 {	
     //Constants 
     let PRESCALE_REG = 0xFE //the prescale register address
@@ -48,22 +48,12 @@ namespace Kitronik_Robotics_Board
         Motor4 = 0x40
     }
 
-    // List of stepper motors for the stepper motor blocks to use.
-    // Stepper 1 would connect to Motor 1 & Motor 2
-    // Stepper 2 would connect to Motor 3 & Motor 4
-    export enum StepperMotors {
-        //% block="Stepper 1"
-        Stepper1,
-        //% block="Stepper 2"
-        Stepper2
-    }
-
     // Directions the motors can rotate.
     export enum MotorDirection {
-        //% block="Forward"
-        Forward,
-        //% block="Reverse"
-        Reverse
+        //% block="CCW"
+        CCW,
+        //% block="CW"
+        CW
     }
 
     // The Robotics board can be configured to use different I2C addresses, these are all listed here.
@@ -80,8 +70,6 @@ namespace Kitronik_Robotics_Board
     export let chipAddress = BoardAddresses.Board1 //default Kitronik Chip address for All-in-One Robotics Board
 
     let initalised = false //a flag to allow us to initialise without explicitly calling the secret incantation
-    export let stepper1Steps = 200 //Default value for the majority of stepper motors; can be altered via a block if neccessary for a particular stepper motor
-    export let stepper2Steps = 200 //Default value for the majority of stepper motors; can be altered via a block if neccessary for a particular stepper motor
 
     //Trim the servo pulses. These are here for advanced users, and not exposed to blocks.
     //It appears that servos I've tested are actually expecting 0.5 - 2.5mS pulses, 
@@ -122,35 +110,35 @@ namespace Kitronik_Robotics_Board
 		This secret incantation sets up the PCA9865 I2C driver chip to be running at 50Hz pulse repetition, and then sets the 16 output registers to 1.5mS - centre travel.
 		It should not need to be called directly be a user - the first servo or motor write will call it automatically.
 	*/
-	function secretIncantation(): void {
-        let buf = pins.createBuffer(2)
+	function I2cInit(): void {
+            let buf = pins.createBuffer(2)
 
-        //Should probably do a soft reset of the I2C chip here when I figure out how
+            //Should probably do a soft reset of the I2C chip here when I figure out how
 
-        // First set the prescaler to 50 hz
-        buf[0] = PRESCALE_REG
-        buf[1] = 0x85 //50Hz
-        pins.i2cWriteBuffer(chipAddress, buf, false)
-        //Block write via the all leds register to turn off all servo and motor outputs
-        buf[0] = 0xFA
-        buf[1] = 0x00
-        pins.i2cWriteBuffer(chipAddress, buf, false)
-        buf[0] = 0xFB
-        buf[1] = 0x00
-        pins.i2cWriteBuffer(chipAddress, buf, false)
-        buf[0] = 0xFC
-        buf[1] = 0x00
-        pins.i2cWriteBuffer(chipAddress, buf, false)
-        buf[0] = 0xFD
-        buf[1] = 0x00
-        pins.i2cWriteBuffer(chipAddress, buf, false)
-        //Set the mode 1 register to come out of sleep
-        buf[0] = MODE_1_REG
-        buf[1] = 0x01
-        pins.i2cWriteBuffer(chipAddress, buf, false)
-        //set the initalised flag so we dont come in here again automatically
-        initalised = true
-    }
+            // First set the prescaler to 50 hz
+            buf[0] = PRESCALE_REG
+            buf[1] = 0x85 //50Hz
+            pins.i2cWriteBuffer(chipAddress, buf, false)
+            //Block write via the all leds register to turn off all servo and motor outputs
+            buf[0] = 0xFA
+            buf[1] = 0x00
+            pins.i2cWriteBuffer(chipAddress, buf, false)
+            buf[0] = 0xFB
+            buf[1] = 0x00
+            pins.i2cWriteBuffer(chipAddress, buf, false)
+            buf[0] = 0xFC
+            buf[1] = 0x00
+            pins.i2cWriteBuffer(chipAddress, buf, false)
+            buf[0] = 0xFD
+            buf[1] = 0x00
+            pins.i2cWriteBuffer(chipAddress, buf, false)
+            //Set the mode 1 register to come out of sleep
+            buf[0] = MODE_1_REG
+            buf[1] = 0x01
+            pins.i2cWriteBuffer(chipAddress, buf, false)
+            //set the initalised flag so we dont come in here again automatically
+            initalised = true
+    	}
 	
     /**
      * Sets the requested servo to the reguested angle.
@@ -166,7 +154,7 @@ namespace Kitronik_Robotics_Board
 	//% degrees.min=0 degrees.max=180
     export function servoWrite(servo: Servos, degrees: number): void {
         if (initalised == false) {
-            secretIncantation()
+            I2cInit()
         }
         let buf = pins.createBuffer(2)
         let highByte = false
@@ -207,7 +195,7 @@ namespace Kitronik_Robotics_Board
     //% speed.min=0 speed.max=100
     export function motorOn(motor: Motors, dir: MotorDirection, speed: number): void {
         if (initalised == false) {
-            secretIncantation()
+            I2cInit()
         }
 
         /*convert 0-100 to 0-4095 (approx) We wont worry about the last 95 to make life simpler*/
@@ -217,7 +205,7 @@ namespace Kitronik_Robotics_Board
         let highByte = false
 
         switch (dir) {
-            case MotorDirection.Forward:
+            case MotorDirection.CCW:
                 if (outputVal > 0xFF) {
                     highByte = true
                 }
@@ -241,7 +229,7 @@ namespace Kitronik_Robotics_Board
                 buf[1] = 0x00
                 pins.i2cWriteBuffer(chipAddress, buf, false)
                 break
-            case MotorDirection.Reverse:
+            case MotorDirection.CW:
                 if (outputVal > 0xFF) {
                     highByte = true
                 }
