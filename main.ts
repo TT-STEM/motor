@@ -113,7 +113,7 @@ namespace motor
     //% group=Servos
     //% blockId=motor_setServo
     //% block="Servo|%Servo|degree|%degrees|"
-    //% weight=100 blockGap=8
+    //% weight=100 blockGap=15
     //% degrees.min=0 degrees.max=180
     export function setServo(servo: Servos, degrees: number): void {
         if (initalised == false) {
@@ -149,7 +149,7 @@ namespace motor
     //% group=Motors
     //% blockId=motor_startMotor
     //% block="Motor|%motor|direction|%dir|speed|%speed|"
-    //% weight=100 blockGap=8
+    //% weight=100 blockGap=15
     //% speed.min=0 speed.max=100
     export function startMotor(motor: Motors, dir: MotorDirection, speed: number): void {
         if (initalised == false) {
@@ -221,7 +221,7 @@ namespace motor
      */
     //% group=Motors
     //% blockId=motor_stopMotor
-    //% weight=99 blockGap=8
+    //% weight=99 blockGap=15
     //%block="Motor Stop|%motor|"
     export function stopMotor(motor: Motors): void {
 
@@ -246,7 +246,7 @@ namespace motor
      */
     //% group=Motors
     //% blockId=motor_stopAllMotors
-    //% weight=98 blockGap=8
+    //% weight=98 blockGap=15
     //%block="Motor Stop All"
     export function stopAllMotors(): void {       
         stopMotor(Motors.Motor1)
@@ -260,7 +260,7 @@ namespace motor
      */
     //% group=Servos
     //% blockId=motor_stopAllServos
-    //% weight=99 blockGap=8
+    //% weight=99 blockGap=15
     //%block="Servo Reset All"
     export function stopAllServos(): void {
         let buf = pins.createBuffer(2)
