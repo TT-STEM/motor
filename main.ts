@@ -67,13 +67,12 @@ namespace motor
     }
 
     // chipAddress can be changed in 'JavaScript' mode if the I2C address of the board has been altered:
-    // 'Kitronik_Robotics_Board.chipAddress = Kitronik_Robotics_Board.BoardAddresses.Boardx' ('x' is one of the BoardAddresses)
-    export let chipAddress = BoardAddresses.Board1 //default Kitronik Chip address for All-in-One Robotics Board
-
+    export let chipAddress = BoardAddresses.Board1 
+    
     let initalised = false //a flag to allow us to initialise without explicitly calling the secret incantation
 
     /**
-     * Initialize I2C motors and servos
+     * Initialise I2C chip
      */
     function I2cInit(): void {
 	let buf = pins.createBuffer(2)
@@ -109,15 +108,14 @@ namespace motor
     }
 	
     /**
-     * Sets the requested servo to the reguested angle.
-     * If the PCA has not yet been initialised calls the initialisation routine.     
+     * Sets the requested servo to the requested angle.
      */
     //% group=Servos
-    //% blockId=motor_servo
+    //% blockId=motor_setServo
     //% block="Servo|%Servo|degree|%degrees|"
     //% weight=100 blockGap=8
     //% degrees.min=0 degrees.max=180
-    export function servo(servo: Servos, degrees: number): void {
+    export function setServo(servo: Servos, degrees: number): void {
         if (initalised == false) {
             I2cInit()
         }
@@ -147,7 +145,6 @@ namespace motor
 
     /**
      * Sets the requested motor running in chosen direction at a set speed.
-     * if the PCA has not yet been initialised calls the initialisation routine.     
      */
     //% group=Motors
     //% blockId=motor_startMotor
@@ -259,7 +256,7 @@ namespace motor
     }
 	
     /**
-     * Turns off all servos.
+     * Resets all servos.
      */
     //% group=Servos
     //% blockId=motor_stopAllServos
