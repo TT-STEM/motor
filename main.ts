@@ -1,7 +1,7 @@
 /**
  * Motor Control for TT Motor Users.
  */
-//% weight=100 color=#DF6721 icon="\uf14e" block="TT Motor"
+//% weight=10 color=#DF6721 icon="\uf14e" block="TT Motor"
 //% groups='["Motors", "Servos"]'
 namespace motor
 {	
@@ -221,7 +221,7 @@ namespace motor
      */
     //% group=Motors
     //% blockId=motor_stopMotor
-    //% weight=95 blockGap=8
+    //% weight=99 blockGap=8
     //%block="Motor Stop|%motor|"
     export function stopMotor(motor: Motors): void {
 
@@ -246,7 +246,7 @@ namespace motor
      */
     //% group=Motors
     //% blockId=motor_stopAllMotors
-    //% weight=100 blockGap=8
+    //% weight=98 blockGap=8
     //%block="Motor Stop All"
     export function stopAllMotors(): void {       
         stopMotor(Motors.Motor1)
@@ -260,7 +260,7 @@ namespace motor
      */
     //% group=Servos
     //% blockId=motor_stopAllServos
-    //% weight=100 blockGap=8
+    //% weight=99 blockGap=8
     //%block="Servo Reset All"
     export function stopAllServos(): void {
         let buf = pins.createBuffer(2)
