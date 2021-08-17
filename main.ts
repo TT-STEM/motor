@@ -19,33 +19,33 @@ namespace motor
 
     // List of servos for the servo block to use. These represent register offsets in the PCA9865 driver IC.
     export enum Servos {
-        //% block="Servo 1"
+        //% block="S1"
         Servo1 = 0x08,
-        //% block="Servo 2"
+        //% block="S2"
         Servo2 = 0x0C,
-        //% block="Servo 3"
+        //% block="S3"
         Servo3 = 0x10,
-        //% block="Servo 4"
+        //% block="S4"
         Servo4 = 0x14,
-        //% block="Servo 5"
+        //% block="S5"
         Servo5 = 0x18,
-        //% block="Servo 6"
+        //% block="S6"
         Servo6 = 0x1C,
-        //% block="Servo 7"
+        //% block="S7"
         Servo7 = 0x20,
-        //% block="Servo 8"
+        //% block="S8"
         Servo8 = 0x24
     }
 
     // List of motors for the motor blocks to use. These represent register offsets in the PCA9865 driver IC.
     export enum Motors {
-        //% block="Motor 1"
+        //% block="M1"
         Motor1 = 0x28,
-        //% block="Motor 2"
+        //% block="M2"
         Motor2 = 0x30,
-        //% block="Motor 3"
+        //% block="M3"
         Motor3 = 0x38,
-        //% block="Motor 4"
+        //% block="M4"
         Motor4 = 0x40
     }
 
