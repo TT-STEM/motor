@@ -54,18 +54,17 @@ namespace motor
         //% block="CW"
         CW,
 	//% block="CCW"
-        CCW
-        
+        CCW        
     }
 
     // The Robotics board can be configured to use different I2C addresses, these are all listed here.
     // Board1 is the default value (set as the CHIP_ADDRESS)
-	export enum BoardAddresses{
-		Board1 = 0x6C,
-        	Board2 = 0x6D,
-        	Board3 = 0x6E,
-        	Board4 = 0x6F
-	}
+    export enum BoardAddresses{
+	Board1 = 0x6C,
+        Board2 = 0x6D,
+        Board3 = 0x6E,
+        Board4 = 0x6F
+    }
 
     // chipAddress can be changed in 'JavaScript' mode if the I2C address of the board has been altered:
     // 'Kitronik_Robotics_Board.chipAddress = Kitronik_Robotics_Board.BoardAddresses.Boardx' ('x' is one of the BoardAddresses)
@@ -73,45 +72,9 @@ namespace motor
 
     let initalised = false //a flag to allow us to initialise without explicitly calling the secret incantation
 
-    //Trim the servo pulses. These are here for advanced users, and not exposed to blocks.
-    //It appears that servos I've tested are actually expecting 0.5 - 2.5mS pulses, 
-    //not the widely reported 1-2mS 
-    //that equates to multiplier of 226, and offset of 0x66
-    // a better trim function that does the maths for the end user could be exposed, the basics are here 
-	// for reference
-    export function trimServoMultiplier(Value: number) {
-        if (Value < 113) {
-            SERVO_MULTIPLIER = 113
-        }
-        else {
-            if (Value > 226) {
-                SERVO_MULTIPLIER = 226
-            }
-            else {
-                SERVO_MULTIPLIER = Value
-            }
-
-        }
-    }
-    export function trimServoZeroOffset(Value: number) {
-        if (Value < 0x66) {
-            SERVO_ZERO_OFFSET = 0x66
-        }
-        else {
-            if (Value > 0xCC) {
-                SERVO_ZERO_OFFSET = 0xCC
-            }
-            else {
-                SERVO_ZERO_OFFSET = Value
-            }
-
-        }
-    }
-
-	/*
-		This secret incantation sets up the PCA9865 I2C driver chip to be running at 50Hz pulse repetition, and then sets the 16 output registers to 1.5mS - centre travel.
-		It should not need to be called directly be a user - the first servo or motor write will call it automatically.
-	*/
+    /**
+     * Initialize I2C motors and servos
+     */
     function I2cInit(): void {
 	let buf = pins.createBuffer(2)
 
@@ -122,7 +85,7 @@ namespace motor
 	buf[1] = 0x85 //50Hz
 	pins.i2cWriteBuffer(chipAddress, buf, false)
 
-		    //Block write via the all leds register to turn off all servo and motor outputs
+	//Block write via the all leds register to turn off all servo and motor outputs
 	buf[0] = 0xFA
 	buf[1] = 0x00
 	pins.i2cWriteBuffer(chipAddress, buf, false)
@@ -187,11 +150,11 @@ namespace motor
      * if the PCA has not yet been initialised calls the initialisation routine.     
      */
     //% group=Motors
-    //% blockId=motor_motorOn
+    //% blockId=motor_startMotor
     //% block="Motor|%motor|direction|%dir|speed|%speed|"
     //% weight=100 blockGap=8
     //% speed.min=0 speed.max=100
-    export function motorOn(motor: Motors, dir: MotorDirection, speed: number): void {
+    export function startMotor(motor: Motors, dir: MotorDirection, speed: number): void {
         if (initalised == false) {
             I2cInit()
         }
@@ -301,7 +264,7 @@ namespace motor
     //% group=Servos
     //% blockId=motor_stopAllServos
     //% weight=100 blockGap=8
-    //%block="Servo Stop All"
+    //%block="Servo Reset All"
     export function stopAllServos(): void {
         let buf = pins.createBuffer(2)
         let servoOffCount = 0
