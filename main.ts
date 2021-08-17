@@ -51,10 +51,11 @@ namespace motor
 
     // Directions the motors can rotate.
     export enum MotorDirection {
-        //% block="CCW"
-        CCW,
         //% block="CW"
-        CW
+        CW,
+	//% block="CCW"
+        CCW
+        
     }
 
     // The Robotics board can be configured to use different I2C addresses, these are all listed here.
@@ -142,7 +143,7 @@ namespace motor
 
 	//set the initalised flag so we dont come in here again automatically
 	initalised = true
-    	}
+    }
 	
     /**
      * Sets the requested servo to the reguested angle.
