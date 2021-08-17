@@ -292,7 +292,6 @@ namespace motor
         stopMotor(Motors.Motor2)
         stopMotor(Motors.Motor3)
         stopMotor(Motors.Motor4)
-        }
     }
 	
     /**
