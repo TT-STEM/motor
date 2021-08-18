@@ -1,7 +1,7 @@
 /**
  * Motor Control for TT Motor Users.
  */
-//% weight=10 color=#DF6721 icon="\uf135" block="TT Motor"
+//% weight=11 color=#DF6721 icon="\uf135" block="TT Motor"
 //% groups='["Motors", "Servos"]'
 namespace motor
 {	
