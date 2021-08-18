@@ -314,7 +314,7 @@ namespace motor
      */
     //% group=Servos
     //% blockId=motor_stopAllServos
-    //% weight=99 blockGap=15
+    //% weight=98 blockGap=15
     //%block="Servo Stop All"
     export function stopAllServos(): void {
         let buf = pins.createBuffer(2)
