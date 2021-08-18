@@ -164,7 +164,7 @@ namespace motor
 
         switch (dir) {
             case MotorDirection.CCW:
-		if (motor == Motor1 || motor == Motor3){
+		if (motor == Motors.Motor1 || motor == Motors.Motor3){
 		    if (outputVal > 0xFF) {
                 	highByte = true
                     }
@@ -216,7 +216,7 @@ namespace motor
 		}                
                 break
             case MotorDirection.CW:
-                if (motor == Motor1 || motor == Motor3){
+                if (motor == Motors.Motor1 || motor == Motors.Motor3){
 		    if (outputVal > 0xFF) {
                 	highByte = true
                     }
