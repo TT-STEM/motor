@@ -315,7 +315,7 @@ namespace motor
     //% group=Servos
     //% blockId=motor_stopAllServos
     //% weight=99 blockGap=15
-    //%block="Servo Reset All"
+    //%block="Servo Stop All"
     export function stopAllServos(): void {
         let buf = pins.createBuffer(2)
         let servoOffCount = 0
