@@ -163,7 +163,7 @@ namespace motor
         let highByte = false
 
         switch (dir) {
-            case MotorDirection.CCW:
+            case MotorDirection.CW:
 		if (motor == Motors.Motor1 || motor == Motors.Motor3){
 		    if (outputVal > 0xFF) {
                 	highByte = true
@@ -215,7 +215,7 @@ namespace motor
                     pins.i2cWriteBuffer(chipAddress, buf, false)
 		}                
                 break
-            case MotorDirection.CW:
+            case MotorDirection.CCW:
                 if (motor == Motors.Motor1 || motor == Motors.Motor3){
 		    if (outputVal > 0xFF) {
                 	highByte = true
