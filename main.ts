@@ -164,54 +164,108 @@ namespace motor
 
         switch (dir) {
             case MotorDirection.CCW:
-                if (outputVal > 0xFF) {
-                    highByte = true
-                }
-                buf[0] = motor + 4
-                buf[1] = outputVal
-                pins.i2cWriteBuffer(chipAddress, buf, false)
-                if (highByte) {
-                    buf[0] = motor + 5
-                    buf[1] = outputVal/256
-                }
-                else {
+		if (motor == Motor1 || motor == Motor3){
+		    if (outputVal > 0xFF) {
+                	highByte = true
+                    }
+
+                    buf[0] = motor
+                    buf[1] = outputVal
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+
+                    if (highByte) {
+                        buf[0] = motor + 1
+                        buf[1] = outputVal/256
+                    }
+                    else {
+                        buf[0] = motor + 1
+                        buf[1] = 0x00
+                    }
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+
+                    buf[0] = motor + 4
+                    buf[1] = 0x00
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
                     buf[0] = motor + 5
                     buf[1] = 0x00
-                }
-                pins.i2cWriteBuffer(chipAddress, buf, false)
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+		}
+		else{
+		    if (outputVal > 0xFF) {
+                	highByte = true
+                    }
+                    buf[0] = motor + 4
+                    buf[1] = outputVal
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+                    if (highByte) {
+                        buf[0] = motor + 5
+                        buf[1] = outputVal/256
+                    }
+                    else {
+                        buf[0] = motor + 5
+                        buf[1] = 0x00
+                    }
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
 
-                buf[0] = motor
-                buf[1] = 0x00
-                pins.i2cWriteBuffer(chipAddress, buf, false)
-                buf[0] = motor + 1
-                buf[1] = 0x00
-                pins.i2cWriteBuffer(chipAddress, buf, false)
+                    buf[0] = motor
+                    buf[1] = 0x00
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+                    buf[0] = motor + 1
+                    buf[1] = 0x00
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+		}                
                 break
             case MotorDirection.CW:
-                if (outputVal > 0xFF) {
-                    highByte = true
-                }
+                if (motor == Motor1 || motor == Motor3){
+		    if (outputVal > 0xFF) {
+                	highByte = true
+                    }
+                    buf[0] = motor + 4
+                    buf[1] = outputVal
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+                    if (highByte) {
+                        buf[0] = motor + 5
+                        buf[1] = outputVal/256
+                    }
+                    else {
+                        buf[0] = motor + 5
+                        buf[1] = 0x00
+                    }
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
 
-                buf[0] = motor
-                buf[1] = outputVal
-                pins.i2cWriteBuffer(chipAddress, buf, false)
-
-                if (highByte) {
-                    buf[0] = motor + 1
-                    buf[1] = outputVal/256
-                }
-                else {
+                    buf[0] = motor
+                    buf[1] = 0x00
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
                     buf[0] = motor + 1
                     buf[1] = 0x00
-                }
-                pins.i2cWriteBuffer(chipAddress, buf, false)
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+		}
+		else{
+		    if (outputVal > 0xFF) {
+                	highByte = true
+                    }
 
-                buf[0] = motor + 4
-                buf[1] = 0x00
-                pins.i2cWriteBuffer(chipAddress, buf, false)
-                buf[0] = motor + 5
-                buf[1] = 0x00
-                pins.i2cWriteBuffer(chipAddress, buf, false)
+                    buf[0] = motor
+                    buf[1] = outputVal
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+
+                    if (highByte) {
+                        buf[0] = motor + 1
+                        buf[1] = outputVal/256
+                    }
+                    else {
+                        buf[0] = motor + 1
+                        buf[1] = 0x00
+                    }
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+
+                    buf[0] = motor + 4
+                    buf[1] = 0x00
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+                    buf[0] = motor + 5
+                    buf[1] = 0x00
+                    pins.i2cWriteBuffer(chipAddress, buf, false)
+		}                
                 break
         }            
     }   
