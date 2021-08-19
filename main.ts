@@ -308,13 +308,31 @@ namespace motor
         stopMotor(Motors.Motor3)
         stopMotor(Motors.Motor4)
     }
-	
+    
     /**
-     * Resets all servos.
+     * Turns off specified servo.     
+     */
+    //% group=Servos
+    //% blockId=motor_stopServo
+    //% weight=99 blockGap=15
+    //%block="Servo Stop|%servo|"
+    export function stopServo(servo: Servos): void {
+	let buf = pins.createBuffer(2)
+        
+        buf[0] = servo
+        buf[1] = 0x00
+        pins.i2cWriteBuffer(chipAddress, buf, false)
+        buf[0] = servo + 1
+        buf[1] = 0x00
+        pins.i2cWriteBuffer(chipAddress, buf, false)
+    }
+    
+    /**
+     * Turns off all servos.
      */
     //% group=Servos
     //% blockId=motor_stopAllServos
-    //% weight=99 blockGap=15
+    //% weight=98 blockGap=15
     //%block="Servo Stop All"
     export function stopAllServos(): void {
         let buf = pins.createBuffer(2)
