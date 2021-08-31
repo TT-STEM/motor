@@ -19,33 +19,33 @@ namespace motor
 
     // List of servos for the servo block to use. These represent register offsets in the PCA9865 driver IC.
     export enum Servos {
-        //% block="S1"
+        //% block="SV1"
         Servo1 = 0x08,
-        //% block="S2"
+        //% block="SV2"
         Servo2 = 0x0C,
-        //% block="S3"
+        //% block="SV3"
         Servo3 = 0x10,
-        //% block="S4"
+        //% block="SV4"
         Servo4 = 0x14,
-        //% block="S5"
+        //% block="SV5"
         Servo5 = 0x18,
-        //% block="S6"
+        //% block="SV6"
         Servo6 = 0x1C,
-        //% block="S7"
+        //% block="SV7"
         Servo7 = 0x20,
-        //% block="S8"
+        //% block="SV8"
         Servo8 = 0x24
     }
 
     // List of motors for the motor blocks to use. These represent register offsets in the PCA9865 driver IC.
     export enum Motors {
-        //% block="M1"
+        //% block="1"
         Motor1 = 0x28,
-        //% block="M2"
+        //% block="2"
         Motor2 = 0x30,
-        //% block="M3"
+        //% block="3"
         Motor3 = 0x38,
-        //% block="M4"
+        //% block="4"
         Motor4 = 0x40
     }
 
@@ -276,7 +276,7 @@ namespace motor
     //% group=Motors
     //% blockId=motor_stopMotor
     //% weight=99 blockGap=15
-    //%block="Motor Stop|%motor|"
+    //%block="Motor|%motor|Stop"
     export function stopMotor(motor: Motors): void {
 
     	let buf = pins.createBuffer(2)
@@ -315,7 +315,7 @@ namespace motor
     //% group=Servos
     //% blockId=motor_stopServo
     //% weight=99 blockGap=15
-    //%block="Servo Stop|%servo|"
+    //%block="Servo|%servo|Stop"
     export function stopServo(servo: Servos): void {
 	let buf = pins.createBuffer(2)
         
