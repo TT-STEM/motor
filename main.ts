@@ -3,7 +3,7 @@
  */
 //% weight=11 color=#DF6721 icon="\uf085" block="HC Motor"
 //% groups='["Motors", "Servos"]'
-namespace motor
+namespace HC_motor
 {	
     //Constants 
     let PRESCALE_REG = 0xFE //the prescale register address
